@@ -2,8 +2,17 @@
 
 export LC_ALL=en_US.UTF-8
 
-current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$current_dir/../lib/utils.sh"
+get_tmux_option() {
+    local option=$1
+    local default_value=$2
+    local option_value
+    option_value=$(tmux show-option -gqv "$option")
+    if [ -z "$option_value" ]; then
+        echo "$default_value"
+    else
+        echo "$option_value"
+    fi
+}
 
 OPENCODE_AUTH_PATH="${HOME}/.local/share/opencode/auth.json"
 COPILOT_QUOTA_CONFIG_PATH="${HOME}/.config/opencode/copilot-quota-token.json"
